@@ -32,7 +32,6 @@ export default function GoalForm({ onSuccess }) {
     }
   };
 
-  // shared styles for consistency
   const inputClass =
     "p-2 rounded bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-cyan-400";
 
@@ -44,7 +43,6 @@ export default function GoalForm({ onSuccess }) {
       <h3 className="text-xl font-bold mb-2">Add New Goal</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
         <input
           type="text"
           placeholder="Goal Title"
@@ -72,14 +70,21 @@ export default function GoalForm({ onSuccess }) {
           required
         />
 
-        <input
-          type="date"
-          className={inputClass}
-          value={form.deadline}
-          onChange={(e) => setForm({ ...form, deadline: e.target.value })}
-          required
-        />
-
+        {/* DEADLINE FLOATING LABEL */}
+        <div className="relative">
+          <input
+            type="date"
+            className="p-2 rounded bg-white/20 text-white w-full focus:outline-none focus:ring-2 focus:ring-blue-400 peer"
+            value={form.deadline}
+            onChange={(e) => setForm({ ...form, deadline: e.target.value })}
+            required
+          />
+          <label
+            className="absolute left-2 -top-3 text-xs px-2 bg-slate-900/80 rounded text-blue-300"
+          >
+            Deadline
+          </label>
+        </div>
       </div>
 
       <textarea
@@ -90,7 +95,15 @@ export default function GoalForm({ onSuccess }) {
         onChange={(e) => setForm({ ...form, description: e.target.value })}
       />
 
-      <button className="w-full p-2 bg-gradient-to-r from-green-400 to-lime-500 font-semibold text-slate-900 rounded-lg shadow-md hover:opacity-90 transition">
+      <button
+        className="
+        w-full p-2 
+        bg-gradient-to-r from-cyan-400 to-blue-500 
+        font-semibold text-slate-900 
+        rounded-lg shadow-md 
+        hover:opacity-90 transition
+      "
+      >
         Add Goal
       </button>
     </form>

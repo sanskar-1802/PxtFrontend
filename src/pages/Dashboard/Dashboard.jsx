@@ -115,7 +115,16 @@ export default function Dashboard() {
   const COLORS = ["#06b6d4", "#3b82f6", "#8b5cf6", "#f43f5e", "#9333ea"];
 
   return (
-    <div className="text-white space-y-10">
+   <div className="
+  text-white 
+  mt-4 
+  space-y-10 
+  min-h-screen 
+  overflow-x-hidden 
+  bg-[#020617]
+">
+
+
 
       {/* SUMMARY CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -203,18 +212,45 @@ export default function Dashboard() {
 
 function SummaryCard({ title, value, color }) {
   return (
-    <div className="bg-white/10 rounded-2xl p-6 text-center backdrop-blur-xl transition">
-      <h3 className="text-lg opacity-70">{title}</h3>
-      <p className={`text-3xl font-bold ${color}`}>₹ {value}</p>
+    <div
+      className="
+        rounded-2xl p-6 text-center
+        bg-gradient-to-br from-slate-800/40 via-slate-900/40 to-slate-800/40
+        border border-white/20
+        backdrop-blur-2xl
+        shadow-[0_0_35px_rgba(0,255,255,.25)]
+        hover:shadow-[0_0_60px_rgba(0,255,255,.45)]
+        transition-all duration-500
+        hover:scale-[1.02]
+      "
+    >
+      <h3 className="text-lg opacity-80">{title}</h3>
+      <p className={`text-4xl font-extrabold drop-shadow-lg ${color}`}>₹ {value}</p>
     </div>
   );
 }
 
+
 function ChartCard({ title, children }) {
   return (
-    <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-xl transition">
-      <h3 className="text-center mb-4 font-semibold">{title}</h3>
+    <div
+      className="
+        rounded-2xl p-6
+        bg-gradient-to-br from-slate-800/40 via-slate-900/40 to-slate-800/40
+        border border-white/20
+        backdrop-blur-2xl
+        shadow-[0_0_35px_rgba(0,255,255,.25)]
+        hover:shadow-[0_0_60px_rgba(0,255,255,.45)]
+        transition-all duration-500
+        hover:scale-[1.02]
+      "
+    >
+      <h3 className="text-center mb-4 font-semibold tracking-wide">
+        {title}
+      </h3>
+
       {children}
     </div>
   );
 }
+

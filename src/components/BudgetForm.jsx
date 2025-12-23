@@ -15,17 +15,21 @@ export default function BudgetForm({ onSuccess }) {
     try {
       await addBudget({ ...form, limit: Number(form.limit) });
       onSuccess();
-      setForm({ category: "", limit: "", period: "monthly", startDate: "", endDate: "" });
+      setForm({
+        category: "",
+        limit: "",
+        period: "monthly",
+        startDate: "",
+        endDate: "",
+      });
     } catch (err) {
       alert(err.response?.data?.message || "Error adding budget");
       console.log(err.response?.data);
     }
   };
 
-  // Common UI style classes
   const inputClass =
     "p-2 rounded bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-cyan-400";
-
   const selectClass =
     "p-2 rounded bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer";
 
@@ -61,26 +65,48 @@ export default function BudgetForm({ onSuccess }) {
           value={form.period}
           onChange={(e) => setForm({ ...form, period: e.target.value })}
         >
-          <option className="text-black" value="monthly">Monthly</option>
-          <option className="text-black" value="weekly">Weekly</option>
-          <option className="text-black" value="yearly">Yearly</option>
+          <option className="text-black" value="monthly">
+            Monthly
+          </option>
+          <option className="text-black" value="weekly">
+            Weekly
+          </option>
+          <option className="text-black" value="yearly">
+            Yearly
+          </option>
         </select>
 
-        <input
-          type="date"
-          className={inputClass}
-          value={form.startDate}
-          onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-          required
-        />
+        {/* START DATE */}
+        <div className="relative">
+          <input
+            type="date"
+            className="p-2 rounded bg-white/20 text-white w-full focus:outline-none focus:ring-2 focus:ring-cyan-400 peer"
+            value={form.startDate}
+            onChange={(e) => setForm({ ...form, startDate: e.target.value })}
+            required
+          />
+          <label
+            className="absolute left-2 -top-3 text-xs px-2 bg-slate-900/80 rounded text-cyan-300"
+          >
+            Start Date
+          </label>
+        </div>
 
-        <input
-          type="date"
-          className={inputClass}
-          value={form.endDate}
-          onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-          required
-        />
+        {/* END DATE */}
+        <div className="relative">
+          <input
+            type="date"
+            className="p-2 rounded bg-white/20 text-white w-full focus:outline-none focus:ring-2 focus:ring-cyan-400 peer"
+            value={form.endDate}
+            onChange={(e) => setForm({ ...form, endDate: e.target.value })}
+            required
+          />
+          <label
+            className="absolute left-2 -top-3 text-xs px-2 bg-slate-900/80 rounded text-cyan-300"
+          >
+            End Date
+          </label>
+        </div>
       </div>
 
       <button className="w-full p-2 bg-gradient-to-r from-cyan-400 to-blue-500 font-semibold text-slate-900 rounded-lg shadow-md hover:opacity-90 transition">

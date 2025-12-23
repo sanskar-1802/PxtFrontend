@@ -7,3 +7,11 @@ export const addBudget = (data) => {
 export const getBudgets = () => {
   return apiClient.get("/budgets");
 };
+
+export const deleteBudget = (id) => {
+  const token = localStorage.getItem("accessToken");
+  return apiClient.delete(`budgets/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+

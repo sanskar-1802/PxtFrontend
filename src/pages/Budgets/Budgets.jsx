@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { getBudgets } from "../../services/budgetService";
+import { getBudgets, deleteBudget } from "../../services/budgetService";
 import BudgetForm from "../../components/BudgetForm";
 import { getTransactions } from "../../services/transactionService";
+import ConfirmModal from "../../components/ConfirmModal";
 
 export default function Budgets() {
   const [budgets, setBudgets] = useState([]);
   const [expenses, setExpenses] = useState([]);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     loadBudgets();
@@ -23,6 +26,13 @@ export default function Budgets() {
     setExpenses(arr);
   };
 
+const handleDeleteBudget = async () => {
+  await deleteBudget(deleteId);
+  setConfirmOpen(false);
+  loadBudgets();
+};
+
+
   const getTotalSpentForCategory = (category) => {
     return expenses
       .filter(
@@ -34,49 +44,66 @@ export default function Budgets() {
   };
 
   return (
-    <div className="text-white">
-      <BudgetForm onSuccess={() => { loadBudgets(); loadExpenses(); }} />
+    <div className="mt-4 text-white">
+      <div className="
+        bg-white/10 backdrop-blur-2xl border border-white/20 
+        rounded-2xl p-6 shadow-[0_0_40px_rgba(0,255,255,.3)]
+        space-y-6
+      ">
+        <h1 className="text-3xl font-bold tracking-wide">Budgets</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {budgets.map((b) => {
-          const spent = getTotalSpentForCategory(b.category);
-          const left = b.limit - spent;
-          const over = left < 0;
+        <BudgetForm onSuccess={() => { loadBudgets(); loadExpenses(); }} />
 
-          return (
-            <div
-              key={b._id}
-              className={`p-6 rounded-2xl backdrop-blur-xl border transition-all 
-                ${
-                  over
-                    ? "border-red-500 bg-red-500/20"
-                    : "border-white/20 bg-white/10 hover:bg-white/20"
-                }`}
-            >
-              <h3 className="text-xl font-bold mb-1">{b.category}</h3>
-              <p className="opacity-75 mb-2 capitalize">Period: {b.period}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {budgets.map((b) => {
+            const spent = getTotalSpentForCategory(b.category);
+            const left = b.limit - spent;
+            const over = left < 0;
 
-              <p className="text-lg">
-                <span className="text-cyan-300">Limit:</span> ₹{b.limit}
-              </p>
-
-              <p className="text-lg">
-                <span className="text-yellow-300">Spent:</span> ₹{spent}
-              </p>
-
-              <p
-                className={`text-lg font-semibold ${
-                  over ? "text-red-400" : "text-green-400"
-                }`}
+            return (
+              <div
+                key={b._id}
+                className={`p-6 rounded-2xl border backdrop-blur-xl transition-all
+                  ${
+                    over
+                      ? "border-red-500 bg-red-500/20 shadow-[0_0_25px_rgba(255,0,0,.4)]"
+                      : "border-white/30 bg-white/10 hover:bg-white/20"
+                  }`}
               >
-                {over
-                  ? `Over Budget by ₹${Math.abs(left)}`
-                  : `Remaining ₹${left}`}
-              </p>
-            </div>
-          );
-        })}
+                <h3 className="text-xl font-bold">{b.category}</h3>
+                <p className="opacity-60 capitalize mb-2">Period: {b.period}</p>
+
+                <p>Limit: <span className="text-cyan-300">₹{b.limit}</span></p>
+                <p>Spent: <span className="text-yellow-300">₹{spent}</span></p>
+
+                <p className={`font-bold mt-2 ${over ? "text-red-400" : "text-green-400"}`}>
+                  {over ? `Over by ₹${Math.abs(left)}` : `Remaining ₹${left}`}
+                </p>
+
+<button
+  onClick={() => {
+    setDeleteId(b._id);
+    setConfirmOpen(true);
+  }}
+  className="mt-3 bg-red-500/30 hover:bg-red-500/50 px-3 py-1 rounded w-full"
+>
+  Delete
+</button>
+
+
+              </div>
+            );
+          })}
+        </div>
+
       </div>
+      <ConfirmModal
+  show={confirmOpen}
+  onClose={() => setConfirmOpen(false)}
+  onConfirm={handleDeleteBudget}
+  message="Delete this budget?"
+/>
+
     </div>
   );
 }

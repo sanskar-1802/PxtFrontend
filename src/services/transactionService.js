@@ -1,11 +1,3 @@
-// import apiClient from "./apiClient";
-
-// export const addTransaction = (data) =>
-//   apiClient.post("/api/expenses/add", data);
-
-// export const getTransactions = () =>
-//   apiClient.get("/api/expenses/all");
-
 import apiClient from "./apiClient";
 
 export const addTransaction = (data) => {
@@ -18,6 +10,13 @@ export const addTransaction = (data) => {
 export const getTransactions = () => {
   const token = localStorage.getItem("accessToken");
   return apiClient.get("expenses/all", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const deleteTransaction = (id) => {
+  const token = localStorage.getItem("accessToken");
+  return apiClient.delete(`expenses/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
