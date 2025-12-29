@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function ResetPassword() {
-  const { token } = useParams();
   const navigate = useNavigate();
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+  const id = params.get("id");
 
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -15,6 +18,11 @@ export default function ResetPassword() {
     e.preventDefault();
     setStatus("");
 
+    if (!token || !id) {
+      setStatus("Invalid or expired reset link");
+      return;
+    }
+
     if (password !== confirm) {
       setStatus("Passwords do not match");
       return;
@@ -24,8 +32,8 @@ export default function ResetPassword() {
       setLoading(true);
 
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/request-password/${token}`,
-        { password }
+        `${import.meta.env.VITE_BACKEND_URL}/auth/reset-password`,
+        { id, token, password }
       );
 
       setStatus("Password reset successfully 🎉 Redirecting...");

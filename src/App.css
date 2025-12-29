@@ -1,19 +1,33 @@
 #root {
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
+/* Optional – cards remain nice */
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Remove unnecessary logo animation stuff if you aren’t using it,
+   otherwise you can keep it. Keeping safe version here */
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -33,10 +47,14 @@
   }
 }
 
-.card {
-  padding: 2em;
-}
+/* ✅ Mobile Responsive Fix */
+@media (max-width: 768px) {
+  #root {
+    padding: 0.75rem;
+    text-align: left;   /* better UX on mobile */
+  }
 
-.read-the-docs {
-  color: #888;
+  .card {
+    padding: 1rem;
+  }
 }
